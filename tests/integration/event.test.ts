@@ -5,7 +5,7 @@ import Setting from "@/entities/Setting";
 import { clearDatabase, endConnection } from "../utils/database";
 import { createBasicSettings } from "../utils/app";
 
-const agent =  supertest(app);
+const agent = supertest(app);
 let settings = null;
 
 beforeAll(async () => {
@@ -30,7 +30,7 @@ describe("GET /event", () => {
       endDate: await getSettingValue("end_date"),
       eventTitle: await getSettingValue("event_title"),
       backgroundImage: await getSettingValue("background_image"),
-      logoImage: await getSettingValue("logo_image")
+      logoImage: await getSettingValue("logo_image"),
     });
   });
 });

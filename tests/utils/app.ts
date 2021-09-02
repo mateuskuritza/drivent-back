@@ -14,6 +14,6 @@ export async function createBasicSettings() {
     endDate,
     eventTitle,
     backgroundImage,
-    logoImage
+    logoImage,
   };
 }
