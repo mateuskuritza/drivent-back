@@ -14,8 +14,7 @@ export default class Setting extends BaseEntity {
   static async getEventSettings() {
     const settings = await this.find();
 
-    const getValue = (name: string) =>
-      settings.find((s) => s.name === name).value;
+    const getValue = (name: string) => settings.find(s => s.name === name).value;
 
     return {
       startDate: new Date(getValue("start_date")),

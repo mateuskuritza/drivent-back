@@ -13,7 +13,7 @@ async function runSeedFile(filename: string, connection: Connection) {
   try {
     const content = fs.readFileSync(path.join(__dirname, filename));
     const file: any = yaml.load(content.toString());
-    
+
     const seeds: any = file["seeds"];
 
     for (const seed of seeds) {
@@ -28,9 +28,9 @@ async function runSeedFile(filename: string, connection: Connection) {
         INSERT INTO "${table}" 
           (${keys.map(key => `"${key}"`).join(", ")})
         VALUES 
-          (${keys.map(key => ['number', 'boolean'].indexOf(typeof data[key]) > -1 ? data[key] : `'${data[key]}'`)})
+          (${keys.map(key => (["number", "boolean"].indexOf(typeof data[key]) > -1 ? data[key] : `'${data[key]}'`))})
       `;
-      
+
       await connection.query(query);
       await connection.query(`SELECT setval('${table}_id_seq', (SELECT MAX(id) from "${table}"))`);
     }
@@ -48,7 +48,7 @@ async function init() {
   console.log("Connected!");
 
   const files = fs.readdirSync(path.join(__dirname));
-  
+
   for (const file of files) {
     if (file.indexOf(".seed.yml") === -1 || file.indexOf(".seed.yml") !== file.length - 9) continue;
 

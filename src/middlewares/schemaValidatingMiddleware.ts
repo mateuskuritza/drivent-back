@@ -12,7 +12,10 @@ export default function schemaValidatingMiddleware(schema: Schema, options: Vali
     const validation = schema.validate(req.body, { abortEarly: options.abortEarly });
 
     if (validation.error) {
-      throw new InvalidDataError("body", validation.error.details.map(error => error.message));
+      throw new InvalidDataError(
+        "body",
+        validation.error.details.map(error => error.message),
+      );
     }
 
     next();
