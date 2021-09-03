@@ -11,7 +11,6 @@
     "typeorm": "ts-node ./node_modules/typeorm/cli",
     "migration:generate": "npm run build && npm run typeorm migration:generate --",
     "migration:run": "npm run build && npm run typeorm migration:run",
-    "test-migration:run": "npm run build && NODE_ENV=test npm run typeorm migration:run",
     "eslint": "npx eslint src",
     "eslint:fix": "npx eslint --fix src",
     "seed": "ts-node -r tsconfig-paths/register ./src/seeders",
