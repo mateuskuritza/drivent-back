@@ -2,13 +2,18 @@ import { Request, Response } from "express";
 import httpStatus from "http-status";
 
 import * as purchaseService from "@/services/client/purchase";
+import PurchaseData from "@/interfaces/purchases";
 
-// export async function savePaymentInfo(req: Request, res: Response) {
-//   const enrollmentData = req.body as EnrollmentData;
-//   enrollmentData.userId = req.user.id;
-//   await purchaseService.createNewEnrollment(enrollmentData);
-//   res.sendStatus(httpStatus.OK);
-// }
+export async function savePaymentInfo(req: Request, res: Response) {
+  const purchaseData = req.body as PurchaseData;
+  purchaseData.eventTicketId = req.purchaseData.eventTicketId;
+  purchaseData.accommodationId = req.purchaseData.accommodationId;
+
+  const userId = req.user.id;
+
+  await purchaseService.createNewPurchase(purchaseData, userId);
+  res.sendStatus(httpStatus.OK);
+}
 
 export async function getPaymentInfo(req: Request, res: Response) {
   const purchaseInfo = await purchaseService.getPurchase(req.user.id);
