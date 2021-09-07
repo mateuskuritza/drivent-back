@@ -20,7 +20,7 @@ export default class Modality extends BaseEntity {
   @Column()
   price: number;
 
-  @OneToOne(() => Ticket, ticket => ticket.modality, { eager: true })
+  @OneToOne(() => Ticket, ticket => ticket.modality)
   ticket: Ticket;
 
   static async getModalityInfo() {
@@ -50,6 +50,7 @@ export default class Modality extends BaseEntity {
     if (modality.availableVacancy > 0) {
       modality.availableVacancy -= 1;
     }
+
     await modality.save();
   }
 }

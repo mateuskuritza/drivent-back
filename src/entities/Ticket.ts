@@ -1,17 +1,8 @@
 import TicketData from "@/interfaces/ticket";
 import Modality from "@/entities/Modality";
 import Accommodation from "@/entities/Accommodation";
-//import Accommodation from "@/entities/Accommodation";
-//import NoVacancyAvailable from "@/errors/NoVacancyAvailable";
 
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
-
-/* @Column()
-enrollmentId: number;
-
-@OneToOne(() => Enrollment, (enrollment: Enrollment) => enrollment.address)
-@JoinColumn()
-enrollment: Enrollment; */
 
 @Entity("tickets")
 export default class Ticket extends BaseEntity {
@@ -21,14 +12,14 @@ export default class Ticket extends BaseEntity {
   @Column()
   modalityId: number;
 
-  @OneToOne(() => Modality, (modality: Modality) => modality.ticket)
+  @OneToOne(() => Modality, (modality: Modality) => modality.ticket, { eager: true })
   @JoinColumn()
   modality: Modality;
 
   @Column()
   accommodationId: number;
 
-  @OneToOne(() => Accommodation, (accommodation: Accommodation) => accommodation.ticket)
+  @OneToOne(() => Accommodation, (accommodation: Accommodation) => accommodation.ticket, { eager: true })
   @JoinColumn()
   accommodation: Accommodation;
 
@@ -39,20 +30,13 @@ export default class Ticket extends BaseEntity {
   createdAt: Date;
 
   static async getTicketInfo() {
-    const tickets = await this.find();
+    //const tickets = await this.find();
 
-    console.log(tickets);
-
-    /*  const getTotalVacancy = (name: string) => modalities.find(m => m.name === name).totalVacancy;
-    const getAvailableVacancy = (name: string) => modalities.find(m => m.name === name).availableVacancy;
-    const getPrice = (name: string) => modalities.find(m => m.name === name).price;
- */
     return {};
   }
 
   static async newTicketInfo(data: TicketData) {
-    console.log(data);
-    let price = 100;
+    let price = 10000;
     const modalityId = data.modality === "presential" ? 1 : 2;
     if (modalityId === 1) {
       price += 15000;
@@ -67,5 +51,8 @@ export default class Ticket extends BaseEntity {
       totalPrice: price,
     });
     await newTicket.save();
+
+    /* const t = await this.find();
+    console.log(t); */
   }
 }

@@ -23,13 +23,13 @@ seeds:
       id: 1
       name: "presential"
       totalVacancy: 10
-      availableVacancy: 5
+      availableVacancy: 10
       price: 25000
   - Modality:
       id: 2
       name: "online"
       totalVacancy: 20
-      availableVacancy: 5
+      availableVacancy: 10
       price: 10000
   - Accommodation:
       id: 1

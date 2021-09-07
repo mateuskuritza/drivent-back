@@ -12,7 +12,7 @@ export default class Accommodation extends BaseEntity {
   @Column()
   price: number;
 
-  @OneToOne(() => Ticket, ticket => ticket.accommodation, { eager: true })
+  @OneToOne(() => Ticket, ticket => ticket.accommodation)
   ticket: Ticket;
 
   static async getAccommodationInfo() {
