@@ -18,7 +18,7 @@ export default class Room extends BaseEntity {
   @ManyToOne(() => Hotel, hotel => hotel.rooms)
   hotel: Hotel;
 
-  static async reserveOne(roomId: string) {
+  static async reserveOne(roomId: number) {
     const room = await this.findOne(roomId);
     room.available -= 1;
     const newRoom = await this.save(room);
