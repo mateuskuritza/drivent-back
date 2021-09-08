@@ -1,4 +1,4 @@
-import Setting from "@/entities/Setting";
+import Setting from "../../src/entities/Setting";
 
 export async function createBasicSettings() {
   const startDate = Setting.create({ name: "start_date", value: new Date().toISOString() });
