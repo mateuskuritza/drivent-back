@@ -22,8 +22,8 @@ seeds:
   - Modality:
       id: 1
       name: "presential"
-      totalVacancy: 10
-      availableVacancy: 10
+      totalVacancy: 20
+      availableVacancy: 20
       price: 25000
   - Modality:
       id: 2

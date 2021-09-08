@@ -1,7 +1,7 @@
 import ModalityData from "@/interfaces/modality";
 import NoVacancyAvailable from "@/errors/NoVacancyAvailable";
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
-import Ticket from "@/entities/Ticket";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import Purchase from "@/entities/Purchase";
 
 @Entity("modalities")
 export default class Modality extends BaseEntity {
@@ -20,8 +20,8 @@ export default class Modality extends BaseEntity {
   @Column()
   price: number;
 
-  @OneToOne(() => Ticket, ticket => ticket.modality)
-  ticket: Ticket;
+  @OneToMany(() => Purchase, purchase => purchase.modality)
+  purchase: Purchase;
 
   static async getModalityInfo() {
     const modalities = await this.find();

@@ -1,5 +1,5 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
-import Ticket from "@/entities/Ticket";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import Purchase from "@/entities/Purchase";
 
 @Entity("accommodations")
 export default class Accommodation extends BaseEntity {
@@ -12,8 +12,8 @@ export default class Accommodation extends BaseEntity {
   @Column()
   price: number;
 
-  @OneToOne(() => Ticket, ticket => ticket.accommodation)
-  ticket: Ticket;
+  @OneToMany(() => Purchase, purchase => purchase.accommodation)
+  purchase: Purchase;
 
   static async getAccommodationInfo() {
     const accommodations = await this.find();
