@@ -28,3 +28,14 @@ export async function createFullRoom(hotelId: number) {
   return room;
 }
   
+export async function reserveRoom(id: number, userId: number) {
+  const room = await Room.findOne(id);
+  room.available -= 1;
+  room.userId = userId;
+  await room.save();
+  return room;
+}
+
+export async function getRooms() {
+  return Room.find();
+}
