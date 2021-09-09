@@ -44,5 +44,5 @@ export async function defineAccommodations() {
 }
 
 export async function insertPurchase(purchaseData: PurchaseData) {
-  await Purchase.createOrUpdatePayment(purchaseData);
+  await Purchase.createOrUpdate(purchaseData);
 }

@@ -9,7 +9,6 @@ export async function savePurchaseInfo(req: Request, res: Response) {
   const purchaseData = req.body as PurchaseData;
   purchaseData.modalityId = req.purchaseData.modalityId;
   purchaseData.accommodationId = req.purchaseData.accommodationId;
-  //purchaseData.enrollmentId = req.body.enrollmentId;
 
   //prettier-ignore
   if(purchaseData.modalityId !== 1 && purchaseData.modalityId !== 2 ) return res.sendStatus(httpStatus.BAD_REQUEST);
@@ -22,9 +21,10 @@ export async function savePurchaseInfo(req: Request, res: Response) {
 }
 
 export async function getPurchaseInfo(req: Request, res: Response) {
-  const { id } = req.params;
-  const purchaseInfo = await purchaseService.getPurchase(Number(id));
-  if (!purchaseInfo) {
+  const userId = req.params.id;
+  const purchaseInfo = await purchaseService.getPurchase(Number(userId));
+
+  if (!purchaseInfo.purchase) {
     return res.sendStatus(httpStatus.NO_CONTENT);
   }
 
