@@ -5,6 +5,7 @@ import * as roomService from "@/services/client/room";
 import NotFoundError from "@/errors/NotFoundError";
 import FullRoom from "@/errors/FullRoom";
 import InvalidDataError from "@/errors/InvalidData";
+import ConflictError from "@/errors/ConflictError";
 
 export async function get(req: Request, res: Response) {
   const hotels = await hotelService.getHotels();
@@ -24,6 +25,8 @@ export async function reserveRoom(req: Request, res: Response) {
   const roomId = Number(req.params.id);
   const userId = Number(req.user.id);
   if(!roomId || isNaN(roomId)) throw new InvalidDataError("roomID invalid", []);
+  const userRoom = await roomService.getRoomByUserId(userId);
+  if(userRoom) throw new ConflictError("Already reserved a room");
   const room = await roomService.getRoomById(roomId);
   if(!room)  throw new NotFoundError();
   if(room.available === 0) throw new FullRoom();
@@ -32,7 +35,7 @@ export async function reserveRoom(req: Request, res: Response) {
 }
   
 export async function changeReserve(req: Request, res: Response) {
-  const roomId = Number(req.params.id);
+  const roomId = Number(req.params.roomId);
   const userId = Number(req.user.id);
   if(!roomId || isNaN(roomId)) throw new InvalidDataError("roomID invalid", []);
   const room = await roomService.getRoomById(roomId);
@@ -40,4 +43,11 @@ export async function changeReserve(req: Request, res: Response) {
   if(room.available === 0) throw new FullRoom();
   const newRoom = await roomService.changeReserve(room, userId);
   res.send(newRoom);
+}
+
+export async function userRoomInfos(req: Request, res: Response) {
+  const userId = Number(req.user.id);
+  const room = await roomService.roomInfosByUserId(userId);
+  if(!room) throw new NotFoundError();
+  res.send(room);
 }

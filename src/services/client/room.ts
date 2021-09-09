@@ -19,3 +19,7 @@ export async function changeReserve(newRoom: Room, userId: number) {
   await oldRoom.save();
   return reserveOne(newRoom.id, userId);
 }
+
+export async function roomInfosByUserId(userId: number) {
+  return Room.roomInfosByUserId(userId);
+}
