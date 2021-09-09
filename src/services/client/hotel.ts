@@ -1,22 +1,27 @@
 import Hotel from "@/entities/Hotel";
-import Room from "@/entities/Room";
 
 export async function getHotels() {
-  return await Hotel.getHotels();
+  const hotels = await Hotel.find();
+  return Promise.all(hotels.map( async (hotel) => {
+    const newHotel = hotel;
+    newHotel.vacancies = await getVacancies(hotel.id);
+    return newHotel;
+  }));
 }
 
-export async function getHotelById(id: string) {
+export async function getHotelById(id: number) {
   return Hotel.findOne(id);
 }
 
-export async function getHotelRooms(hotelId: string) {
-  return Hotel.getRooms(hotelId);
+export async function getHotelRooms(hotelId: number) {
+  const hotel = await Hotel.findOne({ where: { id: hotelId }, relations: ["rooms"] });
+  const rooms = hotel.rooms;
+  return rooms.sort( (first, second) => first.id - second.id);
 }
 
-export async function getRoomById(roomId: string) {
-  return Room.findOne(roomId);
-}
-
-export async function reserveOne(roomId: string) {
-  return Room.reserveOne(roomId);
+async function getVacancies(id: number) {
+  const rooms = await getHotelRooms(id);
+  let vacancies = 0;
+  rooms.forEach( room => vacancies += room.available);
+  return vacancies;
 }

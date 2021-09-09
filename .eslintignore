@@ -1,4 +1,5 @@
 ormconfig.js
+/src/migrations*
 [Bb]uild*
 [Dd]ataFiles*
 [Dd]ist*
