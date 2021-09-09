@@ -19,6 +19,96 @@ seeds:
       id: 5
       name: "logo_image"
       value: "https://driveneducation.com.br/wp-content/uploads/2021/07/logo-footer.svg"
+  - Hotel:
+      id: 1
+      name: 'Palace One'
+      image: 'https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?s=1024x768'
+      size: 1
+      vacancies: 0
+  - Hotel:
+      id: 2
+      name: 'Drivens Resort'
+      image: 'https://media-cdn.tripadvisor.com/media/photo-m/1280/1c/df/22/79/exterior.jpg'
+      size: 2
+      vacancies: 0
+  - Hotel:
+      id: 3
+      name: 'Kariri Resort'
+      image: 'https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg'
+      size: 3
+      vacancies: 0
+  - Room:
+      id: 1
+      name: '101'
+      size: 1
+      available: 0
+      hotelId: 1
+  - Room:
+      id: 2
+      name: '102'
+      size: 1
+      available: 1
+      hotelId: 1
+  - Room:
+      id: 3
+      name: '103'
+      size: 1
+      available: 0
+      hotelId: 1
+  - Room:
+      id: 4
+      name: '104'
+      size: 1
+      available: 1
+      hotelId: 1
+  - Room:
+      id: 5
+      name: '201'
+      size: 1
+      available: 1
+      hotelId: 2
+  - Room:
+      id: 6
+      name: '202'
+      size: 2
+      available: 2
+      hotelId: 2
+  - Room:
+      id: 7
+      name: '203'
+      size: 1
+      available: 0
+      hotelId: 2
+  - Room:
+      id: 8
+      name: '204'
+      size: 2
+      available: 1
+      hotelId: 2
+  - Room:
+      id: 9
+      name: '301'
+      size: 1
+      available: 0
+      hotelId: 3
+  - Room:
+      id: 10
+      name: '302'
+      size: 2
+      available: 1
+      hotelId: 3
+  - Room:
+      id: 11
+      name: '303'
+      size: 3
+      available: 1
+      hotelId: 3
+  - Room:
+      id: 12
+      name: '304'
+      size: 3
+      available: 2
+      hotelId: 3
   - Modality:
       id: 1
       name: "presential"
