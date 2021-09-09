@@ -1,6 +1,7 @@
 import PurchaseData from "@/interfaces/purchase";
 import Modality from "@/entities/Modality";
 import Accommodation from "@/entities/Accommodation";
+
 import Enrollment from "@/entities/Enrollment";
 
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from "typeorm";
@@ -43,19 +44,17 @@ export default class Purchase extends BaseEntity {
   populateFromData(data: PurchaseData) {
     this.accommodationId = data.accommodationId;
     this.modalityId = data.modalityId;
+    this.enrollmentId = data.userId;
   }
 
   static async getByUserId(userId: number) {
-    const enrollment = await Enrollment.findOne({ where: { userId: userId } });
-
-    const purchase = await this.findOne({ where: { enrollmentId: enrollment ? enrollment.id : 0 } });
+    const purchase = await this.findOne({ where: { id: userId } });
 
     return purchase;
   }
 
   static async createOrUpdate(purchaseData: PurchaseData) {
     let purchase = await this.getByUserId(purchaseData.userId);
-    const enrollment = await Enrollment.findOne({ where: { userId: purchaseData.userId } });
 
     purchase ||= Purchase.create();
     purchase.populateFromData(purchaseData);
@@ -69,7 +68,6 @@ export default class Purchase extends BaseEntity {
       price += 35000;
     }
 
-    purchase.enrollmentId = enrollment.id;
     purchase.totalPrice = price;
 
     await purchase.save();
