@@ -2,8 +2,7 @@ import CannotPurchaseAgainError from "@/errors/CannotPurchaseAgain";
 import PurchaseData from "@/interfaces/purchases";
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
 import Accommodation from "./Accommodation";
-import Ticket from "./Ticket";
-import User from "./User";
+import Enrollment from "./Enrollment";
 
 @Entity("purchases")
 export default class Purchase extends BaseEntity {
@@ -14,42 +13,47 @@ export default class Purchase extends BaseEntity {
   accommodationId: number;
 
   @Column()
-  userId: number;
+  enrollmentId: number;
 
   @Column()
-  ticketId: number;
+  modalityId: number;
 
-  @OneToOne(() => Ticket)
-  @JoinColumn()
-  ticket: Ticket;
+  @Column({ nullable: true })
+  totalPrice: number;
+
+  @Column("boolean", { default: false })
+  paymentDone: boolean;
+
+  @Column("timestamp with time zone", { nullable: false, default: () => "CURRENT_TIMESTAMP" })
+  createdAt: Date;
 
   @OneToOne(() => Accommodation)
   @JoinColumn()
   accommodation: Accommodation;
 
-  @OneToOne(() => User)
+  @OneToOne(() => Enrollment)
   @JoinColumn()
-  user: User;
+  enrollment: Enrollment;
 
-  populateFromData(data: PurchaseData, userId: number) {
+  populateFromData(data: PurchaseData) {
     this.accommodationId = data.accommodationId;
-    this.userId = userId;
-    this.ticketId = data.eventTicketId;
+    this.enrollmentId = data.enrollmentId;
+    this.modalityId = data.modalityId;
   }
 
-  static async getByUserId(userId: number) {
-    return await this.findOne({ where: { userId } });
+  static async getByEnrollmentId(enrollmentId: number) {
+    return await this.findOne({ where: { enrollmentId } });
   }
 
-  static async createOrUpdatePayment(purchaseData: PurchaseData, userId: number) {
-    let purchase = await this.getByUserId(userId);
+  static async createOrUpdatePayment(purchaseData: PurchaseData) {
+    let purchase = await this.getByEnrollmentId(purchaseData.enrollmentId);
 
-    if (purchase && purchase.userId === userId) {
+    if (purchase && purchase.enrollmentId === purchaseData.enrollmentId) {
       throw new CannotPurchaseAgainError();
     }
 
     purchase ||= Purchase.create();
-    purchase.populateFromData(purchaseData, userId);
+    purchase.populateFromData(purchaseData);
     await purchase.save();
   }
 }

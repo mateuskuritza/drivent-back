@@ -7,6 +7,7 @@ declare global {
     export interface Request {
       user?: User;
       purchaseData?: PurchaseData;
+      adminId?: number;
     }
   }
 }

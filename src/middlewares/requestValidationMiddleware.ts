@@ -4,11 +4,11 @@ import PurchaseData from "@/interfaces/purchases";
 
 export default async function requestValidationMiddleware(req: Request, res: Response, next: NextFunction) {
   try {
-    const eventTicketId: number = req.body.eventTicketId;
+    const modalityId: number = req.body.modalityId;
     const accommodationId: number = req.body.accommodationId;
 
     req.purchaseData = {
-      eventTicketId,
+      modalityId,
       accommodationId,
     } as PurchaseData;
     next();

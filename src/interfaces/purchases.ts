@@ -1,6 +1,7 @@
 interface PurchaseData {
-  eventTicketId: number;
+  modalityId: number;
   accommodationId: number;
+  enrollmentId?: number;
 }
 
 export default PurchaseData;
