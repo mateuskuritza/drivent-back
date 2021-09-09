@@ -1,4 +1,4 @@
-import PurchaseData from "@/interfaces/purchases";
+import PurchaseData from "@/interfaces/purchase";
 
 export {};
 
