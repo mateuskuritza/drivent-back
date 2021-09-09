@@ -2,7 +2,7 @@ seeds:
   - Setting:
       id: 1
       name: "start_date"
-      value: "2021-11-21 20:30:00"
+      value: "2021-09-02 20:30:00"
   - Setting:
       id: 2
       name: "end_date"

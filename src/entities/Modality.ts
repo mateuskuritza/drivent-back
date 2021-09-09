@@ -1,6 +1,6 @@
 import ModalityData from "@/interfaces/modality";
 import NoVacancyAvailable from "@/errors/NoVacancyAvailable";
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import Purchase from "@/entities/Purchase";
 
 @Entity("modalities")
@@ -20,8 +20,7 @@ export default class Modality extends BaseEntity {
   @Column()
   price: number;
 
-  @OneToOne(() => Purchase)
-  @JoinColumn()
+  @OneToMany(() => Purchase, purchase => purchase.modality)
   purchase: Purchase;
 
   static async getModalityInfo() {
@@ -42,7 +41,7 @@ export default class Modality extends BaseEntity {
   }
 
   static async updateModalityInfo(data: ModalityData) {
-    const modality = await this.findOne({ where: { name: data.modality } });
+    const modality = await this.findOne({ where: { id: data.modalityId } });
 
     if (modality.availableVacancy === 0) {
       throw new NoVacancyAvailable();

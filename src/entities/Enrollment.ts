@@ -2,7 +2,8 @@ import CpfNotAvailableError from "@/errors/CpfNotAvailable";
 import EnrollmentData from "@/interfaces/enrollment";
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
 import Address from "@/entities/Address";
-import Purchase from "./Purchase";
+import Purchase from "@/entities/Purchase";
+import User from "@/entities/User";
 
 @Entity("enrollments")
 export default class Enrollment extends BaseEntity {
@@ -30,9 +31,12 @@ export default class Enrollment extends BaseEntity {
   @OneToOne(() => Address, address => address.enrollment, { eager: true })
   address: Address;
 
-  @OneToOne(() => Purchase)
-  @JoinColumn()
+  @OneToOne(() => Purchase, purchase => purchase.enrollment)
   purchase: Purchase;
+
+  @OneToOne(() => User, (user: User) => user.enrollment)
+  @JoinColumn()
+  user: User;
 
   populateFromData(data: EnrollmentData) {
     this.name = data.name;

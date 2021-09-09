@@ -7,6 +7,7 @@ import { createBasicSettings, createModalities, defineAccommodations } from "../
 import Purchase from "../../src/entities/Purchase";
 import { login } from "../factories/userFactory";
 import { createEnrollment } from "../factories/enrollmentFactory";
+import { createPurchase } from "../factories/purchaseFactory";
 
 const agent = supertest(app);
 
@@ -26,79 +27,103 @@ afterAll(async () => {
   await endConnection();
 });
 
-describe("GET /purchase", () => {
-  it("should return empty purchase data", async () => {
+describe("GET /payment", () => {
+  it("should return empty purchase data when no enrollment exist.", async () => {
     const {
       user: { id: userId },
       token,
     } = await login();
-    const enrollment = await createEnrollment(userId);
-    const body = {
-      enrollmentId: 1,
-    };
 
-    const response = await agent.get("/purchase").send(body).set("Authorization", `Bearer ${token}`);
+    const response = await agent.get(`/payment/${userId}`).set("Authorization", `Bearer ${token}`);
 
     expect(response.statusCode).toEqual(httpStatus.NO_CONTENT);
   });
 
-  it("should return user's puchase data", async () => {
+  it("should return empty purchase data when no purchase exist.", async () => {
     const {
       user: { id: userId },
       token,
     } = await login();
-    const enrollment = await createEnrollment(userId);
 
-    const body = {
-      modalityId: 1,
-      accommodationId: 1,
-      enrollmentId: enrollment.id,
-    };
+    await createEnrollment(userId);
 
-    const response = await agent.post("/purchase").send(body).set("Authorization", `Bearer ${token}`);
+    const response = await agent.get(`/payment/${userId}`).set("Authorization", `Bearer ${token}`);
+
+    expect(response.statusCode).toEqual(httpStatus.NO_CONTENT);
+  });
+
+  it("should return status OK and purchase data when everthing is correct.", async () => {
+    const {
+      user: { id: userId },
+      token,
+    } = await login();
+
+    await createEnrollment(userId);
+
+    await createPurchase(userId, 1, 1);
+
+    const response = await agent.get(`/payment/${userId}`).set("Authorization", `Bearer ${token}`);
+
     expect(response.statusCode).toEqual(httpStatus.OK);
-
-    const purchaseFind = await Purchase.getByEnrollmentId(enrollment.id);
-
-    expect(purchaseFind).toEqual(expect.objectContaining({}));
+    expect(response.body).toEqual({
+      purchase: {
+        id: expect.any(Number),
+        enrollmentId: expect.any(Number),
+        modalityId: 1,
+        accommodationId: 1,
+        totalPrice: expect.any(Number),
+        paymentDone: expect.any(Boolean),
+        createdAt: expect.any(String),
+        enrollment: expect.anything(),
+        accommodation: expect.anything(),
+        modality: expect.anything(),
+      },
+    });
   });
 });
 
-describe("POST /purchase", () => {
-  it("should return Ok for successfull purchase", async () => {
+describe("POST /payment", () => {
+  it("should return bad request status and no purchase was created.", async () => {
     const {
       user: { id: userId },
       token,
     } = await login();
-    const enrollment = await createEnrollment(userId);
-    const body = {
-      modalityId: 1,
-      accommodationId: 1,
-      enrollmentId: enrollment.id,
-    };
 
-    const response = await agent.post("/purchase").send(body).set("Authorization", `Bearer ${token}`);
-    expect(response.statusCode).toEqual(httpStatus.OK);
-  });
-
-  it("should return invalid params status", async () => {
-    const {
-      user: { id: userId },
-      token,
-    } = await login();
-    const enrollment = await createEnrollment(userId);
     const body = {
       modalityId: 3,
       accommodationId: 1,
-      enrollmentId: enrollment.id,
+      userId: userId,
     };
 
-    const response = await agent.post("/purchase").send(body).set("Authorization", `Bearer ${token}`);
+    await createEnrollment(userId);
+
+    const response = await agent.post("/payment").send(body).set("Authorization", `Bearer ${token}`);
 
     expect(response.statusCode).toEqual(httpStatus.BAD_REQUEST);
 
-    const purchaseFind = await Purchase.getByEnrollmentId(enrollment.id);
+    const purchaseFind = await Purchase.find();
 
-    expect(purchaseFind).toEqual(expect.objectContaining({}));
+    expect(purchaseFind.length).toEqual(0);
+  });
+
+  it("should return status Ok and create a purchase.", async () => {
+    const {
+      user: { id: userId },
+      token,
+    } = await login();
+
+    const body = {
+      modalityId: 1,
+      accommodationId: 1,
+      userId: userId,
+    };
+
+    await createEnrollment(userId);
+
+    const response = await agent.post("/payment").send(body).set("Authorization", `Bearer ${token}`);
+    expect(response.statusCode).toEqual(httpStatus.OK);
+
+    const purchaseFind = await Purchase.find();
+    expect(purchaseFind.length).toEqual(1);
   });
 });
