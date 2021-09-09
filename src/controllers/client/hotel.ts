@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import * as hotelService from "@/services/client/hotel";
 import * as roomService from "@/services/client/room";
+import * as userService from "@/services/client/user";
 import NotFoundError from "@/errors/NotFoundError";
 import FullRoom from "@/errors/FullRoom";
 import InvalidDataError from "@/errors/InvalidData";
@@ -22,11 +23,14 @@ export async function getRooms(req: Request, res: Response) {
 
 export async function reserveRoom(req: Request, res: Response) {
   const roomId = Number(req.params.id);
+  const userId = Number(req.body.userId);
   if(!roomId || isNaN(roomId)) throw new InvalidDataError("roomID invalid", []);
+  if(!userId || isNaN(userId)) throw new InvalidDataError("userID invalid", []);
   const room = await roomService.getRoomById(roomId);
-  if(!room) throw new NotFoundError();
+  const user = await userService.findById(userId);
+  if(!user || !room)  throw new NotFoundError();
   if(room.available === 0) throw new FullRoom();
-  const newRoom = await roomService.reserveOne(roomId);
+  const newRoom = await roomService.reserveOne(roomId, userId);
   res.send(newRoom);
 }
   

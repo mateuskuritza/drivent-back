@@ -14,7 +14,7 @@ export async function getHotelById(id: number) {
 }
 
 export async function getHotelRooms(hotelId: number) {
-  const hotel = await Hotel.findOne({ where: { hotelId }, relations: ["rooms"] });
+  const hotel = await Hotel.findOne({ where: { id: hotelId }, relations: ["rooms"] });
   const rooms = hotel.rooms;
   return rooms.sort( (first, second) => first.id - second.id);
 }
