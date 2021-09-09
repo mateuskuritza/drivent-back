@@ -1,6 +1,6 @@
 import InvalidDataError from "@/errors/InvalidData";
 import { Request, Response, NextFunction } from "express";
-import PurchaseData from "@/interfaces/purchases";
+import PurchaseData from "@/interfaces/purchase";
 
 export default async function requestValidationMiddleware(req: Request, res: Response, next: NextFunction) {
   try {

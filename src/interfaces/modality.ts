@@ -1,5 +1,5 @@
 interface ModalityData {
-  modality: string;
+  modalityId: number;
 }
 
 export default ModalityData;

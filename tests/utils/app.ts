@@ -2,7 +2,7 @@ import Setting from "../../src/entities/Setting";
 import Modality from "../../src/entities/Modality";
 import Accommodation from "../../src/entities/Accommodation";
 import Purchase from "../../src/entities/Purchase";
-import PurchaseData from "../../src/interfaces/purchases";
+import PurchaseData from "../../src/interfaces/purchase";
 
 export async function createBasicSettings() {
   const startDate = Setting.create({ name: "start_date", value: new Date().toISOString() });

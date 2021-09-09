@@ -1,7 +1,7 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
 import bcrypt from "bcrypt";
 import EmailNotAvailableError from "@/errors/EmailNotAvailable";
-import Purchase from "./Purchase";
+import Enrollment from "@/entities/Enrollment";
 
 @Entity("users")
 export default class User extends BaseEntity {
@@ -17,8 +17,8 @@ export default class User extends BaseEntity {
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;
 
-  @OneToOne(() => Purchase)
-  purchase: Purchase;
+  @OneToOne(() => Enrollment, enrollment => enrollment.user, { eager: true })
+  enrollment: Enrollment;
 
   static async createNew(email: string, password: string) {
     await this.validateDuplicateEmail(email);

@@ -7,6 +7,7 @@ import InvalidDataError from "@/errors/InvalidData";
 import ConflictError from "@/errors/ConflictError";
 import UnauthorizedError from "@/errors/Unauthorized";
 import NotFoundError from "@/errors/NotFoundError";
+import NoVacancyAvailableError from "@/errors/NoVacancyAvailable";
 
 /* eslint-disable-next-line */
 export default function errorHandlingMiddleware(err: Error, _req: Request, res: Response, _next: NextFunction) {
@@ -44,6 +45,12 @@ export default function errorHandlingMiddleware(err: Error, _req: Request, res: 
   if (err instanceof NotFoundError) {
     return res.status(httpStatus.NOT_FOUND).send({
       message: err.message,
+    });
+  }
+
+  if (err instanceof NoVacancyAvailableError) {
+    return res.status(httpStatus.METHOD_NOT_ALLOWED).send({
+      message: "No Vacancy Available.",
     });
   }
 

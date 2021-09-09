@@ -1,7 +1,7 @@
 interface PurchaseData {
+  userId: number;
   modalityId: number;
   accommodationId: number;
-  enrollmentId?: number;
 }
 
 export default PurchaseData;
