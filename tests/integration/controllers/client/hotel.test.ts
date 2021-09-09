@@ -50,24 +50,16 @@ describe("POST /hotel/:id/rooms", () => {
   });
   it("should return status 404 not found roomId", async () => {
     const { email, password } = await createUser();
-    const { token, id } = await loginUser({ email, password });
-    const response = await test.post(route("999")).send({ userId: id }).set("Authorization", "Bearer " + token);
-    expect(response.statusCode).toBe(404);
-  });
-  it("should return status 404 not found userId", async () => {
-    const { email, password } = await createUser();
-    const newHotel = await createHotel();
-    const newRoom = await createRoom(newHotel.id);
-    const { token, id } = await loginUser({ email, password });
-    const response = await test.post(route(String(newRoom.id))).send({ userId: id + 1 }).set("Authorization", "Bearer " + token);
+    const { token } = await loginUser({ email, password });
+    const response = await test.post(route("999")).set("Authorization", "Bearer " + token);
     expect(response.statusCode).toBe(404);
   });
   it("should return status 409 full room", async () => {
     const { email, password } = await createUser();
-    const { token, id } = await loginUser({ email, password });
+    const { token } = await loginUser({ email, password });
     const newHotel = await createHotel();
     const newRoom = await createFullRoom(newHotel.id);
-    const response = await test.post(route(String(newRoom.id))).send({ userId: id }).set("Authorization", "Bearer " + token);
+    const response = await test.post(route(String(newRoom.id))).set("Authorization", "Bearer " + token);
     expect(response.statusCode).toBe(409);
   });
   it("should return status 200 and reserve room", async () => {
@@ -75,7 +67,7 @@ describe("POST /hotel/:id/rooms", () => {
     const { token, id } = await loginUser({ email: newUser.email, password: newUser.password });
     const newHotel = await createHotel();
     const newRoom = await createRoom(newHotel.id);
-    const response = await test.post(route(String(newRoom.id))).send({ userId: id }).set("Authorization", "Bearer " + token);
+    const response = await test.post(route(String(newRoom.id))).set("Authorization", "Bearer " + token);
     expect(response.statusCode).toBe(200);
     expect(response.body.available + 1).toBe(newRoom.available);
     expect(response.body.userId).toBe(id);

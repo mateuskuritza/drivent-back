@@ -23,14 +23,16 @@ export async function getRooms(req: Request, res: Response) {
 
 export async function reserveRoom(req: Request, res: Response) {
   const roomId = Number(req.params.id);
-  const userId = Number(req.body.userId);
+  const userId = Number(req.user.id);
   if(!roomId || isNaN(roomId)) throw new InvalidDataError("roomID invalid", []);
-  if(!userId || isNaN(userId)) throw new InvalidDataError("userID invalid", []);
   const room = await roomService.getRoomById(roomId);
-  const user = await userService.findById(userId);
-  if(!user || !room)  throw new NotFoundError();
+  if(!room)  throw new NotFoundError();
   if(room.available === 0) throw new FullRoom();
   const newRoom = await roomService.reserveOne(roomId, userId);
   res.send(newRoom);
 }
   
+export async function changeReserve(req: Request, res: Response) {
+  const roomId = Number(req.params.id);
+  const userId = Number(req.user.id);
+}
