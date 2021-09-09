@@ -35,4 +35,10 @@ export async function reserveRoom(req: Request, res: Response) {
 export async function changeReserve(req: Request, res: Response) {
   const roomId = Number(req.params.id);
   const userId = Number(req.user.id);
+  if(!roomId || isNaN(roomId)) throw new InvalidDataError("roomID invalid", []);
+  const room = await roomService.getRoomById(roomId);
+  if(!room)  throw new NotFoundError();
+  if(room.available === 0) throw new FullRoom();
+  const newRoom = await roomService.changeReserve(room, userId);
+  res.send(newRoom);
 }

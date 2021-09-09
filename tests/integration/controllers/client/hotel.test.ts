@@ -45,13 +45,17 @@ describe("POST /hotel/:id/rooms", () => {
     expect(response.statusCode).toBe(422);
   });
   it("should return status 401 invalid token", async () => {
-    const response = await test.post(route("1")).set("Authorization", "Bearer " + "123456");
+    const newHotel = await createHotel();
+    const newRoom = await createRoom(newHotel.id);
+    const response = await test.post(route(String(newRoom.id))).set("Authorization", "Bearer " + "123456");
     expect(response.statusCode).toBe(401);
   });
   it("should return status 404 not found roomId", async () => {
     const { email, password } = await createUser();
     const { token } = await loginUser({ email, password });
-    const response = await test.post(route("999")).set("Authorization", "Bearer " + token);
+    const newHotel = await createHotel();
+    const newRoom = await createRoom(newHotel.id);
+    const response = await test.post(route(String(newRoom.id + 1))).set("Authorization", "Bearer " + token);
     expect(response.statusCode).toBe(404);
   });
   it("should return status 409 full room", async () => {
@@ -85,13 +89,15 @@ describe("GET /hotel/:id/rooms", () => {
     expect(response.statusCode).toBe(422);
   });
   it("should return status 401 invalid token", async () => {
-    const response = await test.get(route("1")).set("Authorization", "Bearer " + "123456");
+    const newHotel = await createHotel();
+    const response = await test.get(route(String(newHotel.id))).set("Authorization", "Bearer " + "123456");
     expect(response.statusCode).toBe(401);
   });
   it("should return status 404 not found id", async () => {
     const { email, password } = await createUser();
     const { token } = await loginUser({ email, password });
-    const response = await test.get(route("999")).set("Authorization", "Bearer " + token);
+    const newHotel = await createHotel();
+    const response = await test.get(route(String(newHotel.id+1))).set("Authorization", "Bearer " + token);
     expect(response.statusCode).toBe(404);
   });
   it("should return status 200 and rooms", async () => {
@@ -121,5 +127,50 @@ describe("GET /hotel", () => {
     const response = await test.get(route()).set("Authorization", "Bearer " + token);
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual([newHotel, newHotel2]);
+  });
+});
+
+describe("PATCH /hotel/:id/rooms", () => {
+  function route(newRoomId: string): string {
+    return `/hotel/${newRoomId}/rooms`;
+  }
+  it("should return status 422 invalid param", async () => {
+    const { email, password } = await createUser();
+    const { token } = await loginUser({ email, password });
+    const response = await test.patch(route("a")).set("Authorization", "Bearer " + token);
+    expect(response.statusCode).toBe(422);
+  });
+  it("should return status 401 invalid token", async () => {
+    const newHotel = await createHotel();
+    const newRoom = await createRoom(newHotel.id);
+    const response = await test.patch(route(String(newRoom.id))).set("Authorization", "Bearer " + "123456");
+    expect(response.statusCode).toBe(401);
+  });
+  it("should return status 404 not found id", async () => {
+    const { email, password } = await createUser();
+    const { token } = await loginUser({ email, password });
+    const newHotel = await createHotel();
+    const newRoom = await createRoom(newHotel.id);
+    const response = await test.patch(route(String(newRoom.id + 1))).set("Authorization", "Bearer " + token);
+    expect(response.statusCode).toBe(404);
+  });
+  it("should return status 200, new reserved room and update old room", async () => {
+    const { email, password } = await createUser();
+    const { token, id } = await loginUser({ email, password });
+    const newHotel = await createHotel();
+    const oldRoom = await createRoom(newHotel.id);
+    const newRoom = await createRoom(newHotel.id);
+    const oldRooms = await test.get(`/hotel/${newHotel.id}/rooms`).set("Authorization", "Bearer " + token);
+    const firstReserve = await test.post(`/hotel/${oldRoom.id}/rooms`).set("Authorization", "Bearer " + token);
+    const changeReserve = await test.patch(route(String(newRoom.id))).set("Authorization", "Bearer " + token);
+    const newRooms = await test.get(`/hotel/${newHotel.id}/rooms`).set("Authorization", "Bearer " + token);
+
+    expect(changeReserve.statusCode).toBe(200);
+    expect(oldRooms.body[0].userId).toBe(null);
+    expect(oldRooms.body[1].userId).toBe(null);
+    expect(newRooms.body[0].userId).toBe(null);
+    expect(newRooms.body[1].userId).toBe(id);
+    expect(oldRooms.body[0].available).toBe(oldRoom.available);
+    expect(newRooms.body[1].available).toBe(newRoom.available - 1);
   });
 });
