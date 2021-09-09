@@ -19,3 +19,23 @@ seeds:
       id: 5
       name: "logo_image"
       value: "https://driveneducation.com.br/wp-content/uploads/2021/07/logo-footer.svg"
+  - Modality:
+      id: 1
+      name: "presential"
+      totalVacancy: 20
+      availableVacancy: 20
+      price: 25000
+  - Modality:
+      id: 2
+      name: "online"
+      totalVacancy: 20
+      availableVacancy: 10
+      price: 10000
+  - Accommodation:
+      id: 1
+      name: "withoutHotel"
+      price: 0
+  - Accommodation:
+      id: 2
+      name: "withHotel"
+      price: 35000

@@ -24,23 +24,25 @@ export default class Hotel extends BaseEntity {
 
   static async getHotels() {
     const hotels = await this.find();
-    return Promise.all(hotels.map( async (hotel) => {
-      const newHotel = hotel;
-      newHotel.vacancies = await this.getVacancies(String(hotel.id));
-      return newHotel;
-    }));
+    return Promise.all(
+      hotels.map(async hotel => {
+        const newHotel = hotel;
+        newHotel.vacancies = await this.getVacancies(String(hotel.id));
+        return newHotel;
+      }),
+    );
   }
 
   static async getRooms(id: string) {
     const hotel = await this.findOne({ where: { id }, relations: ["rooms"] });
     const rooms = hotel.rooms;
-    return rooms.sort( (first, second) => first.id - second.id);
+    return rooms.sort((first, second) => first.id - second.id);
   }
 
   static async getVacancies(id: string) {
     const rooms = await this.getRooms(id);
     let vacancies = 0;
-    rooms.forEach( room => vacancies += room.available);
+    rooms.forEach(room => (vacancies += room.available));
     return vacancies;
   }
 }
