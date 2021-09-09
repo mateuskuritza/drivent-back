@@ -2,6 +2,7 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne } from "ty
 import bcrypt from "bcrypt";
 import EmailNotAvailableError from "@/errors/EmailNotAvailable";
 import Room from "./Room";
+import Purchase from "./Purchase";
 
 @Entity("users")
 export default class User extends BaseEntity {
@@ -19,6 +20,9 @@ export default class User extends BaseEntity {
 
   @OneToOne(() => Room)
   room: Room;
+
+  @OneToOne(() => Purchase)
+  purchase: Purchase;
 
   static async createNew(email: string, password: string) {
     await this.validateDuplicateEmail(email);
@@ -43,7 +47,7 @@ export default class User extends BaseEntity {
   }
 
   static async findByEmailAndPassword(email: string, password: string) {
-    const user = await this.findOne({ email });
+    const user = await this.findOne({ where: { email } });
 
     if (user && bcrypt.compareSync(password, user.password)) {
       return user;

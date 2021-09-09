@@ -1,7 +1,7 @@
 import supertest from "supertest";
 
-import app, { init } from "@/app";
-import Setting from "@/entities/Setting";
+import app, { init } from "../../src/app";
+import Setting from "../../src/entities/Setting";
 import { clearDatabase, endConnection } from "../utils/database";
 import { createBasicSettings } from "../utils/app";
 

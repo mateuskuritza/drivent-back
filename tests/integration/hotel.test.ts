@@ -1,9 +1,9 @@
 import supertest from "supertest";
-import app, { init } from "../../../../src/app";
-import * as database from "../../../utils/database";
-import * as utils from "../../../utils/app";
-import { createFullRoom, createRoom } from "../../../factories/roomFactory";
-import { createHotel } from "../../../factories/hotelFactory";
+import app, { init } from "../../src/app";
+import * as database from "../utils/database";
+import * as utils from "../utils/app";
+import { createFullRoom, createRoom } from "../factories/roomFactory";
+import { createHotel } from "../factories/hotelFactory";
 
 const test = supertest(app);
 

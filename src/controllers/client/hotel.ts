@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 
 import * as hotelService from "@/services/client/hotel";
 import * as roomService from "@/services/client/room";
-import * as userService from "@/services/client/user";
 import NotFoundError from "@/errors/NotFoundError";
 import FullRoom from "@/errors/FullRoom";
 import InvalidDataError from "@/errors/InvalidData";

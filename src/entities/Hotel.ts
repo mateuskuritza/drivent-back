@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToMany, AfterLoad } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToMany } from "typeorm";
 import Room from "./Room";
 
 @Entity("hotels")
