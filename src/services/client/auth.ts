@@ -4,7 +4,10 @@ import UnauthorizedError from "@/errors/Unauthorized";
 import User from "@/entities/User";
 import Session from "@/entities/Session";
 
-export async function signIn(email: string, password: string) {
+export async function signIn(
+  email: string,
+  password: string,
+): Promise<{ user: { id: number; email: string }; token: string }> {
   const user = await User.findByEmailAndPassword(email, password);
 
   if (!user) {

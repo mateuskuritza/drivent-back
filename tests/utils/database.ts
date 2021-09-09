@@ -18,7 +18,7 @@ export async function clearDatabase() {
 
   for (const entity of entities) {
     try {
-      await connection.query(`DELETE FROM "${entity.tableName}"`);
+      await connection.query(`TRUNCATE TABLE "${entity.tableName}" RESTART IDENTITY CASCADE`);
     } catch {
       // se não deu pra rodar delete na tabela por chave estrangeira, jogo pro final do array pra tentar de novo no futuro
       entities.push(entity);
