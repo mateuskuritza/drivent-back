@@ -5,6 +5,16 @@ import * as purchaseService from "@/services/client/purchase";
 import * as modalityService from "@/services/client/modality";
 import PurchaseData from "@/interfaces/purchase";
 
+export async function processPurchase(req: Request, res: Response) {
+  const purchaseData = req.body as PurchaseData;
+
+  const { userId, modalityId, accommodationId, paymentDone } = purchaseData;
+  if (!userId || !modalityId || !accommodationId || !paymentDone) return res.sendStatus(httpStatus.BAD_REQUEST);
+
+  await purchaseService.updatePurchase(purchaseData);
+  res.sendStatus(httpStatus.OK);
+}
+
 export async function savePurchaseInfo(req: Request, res: Response) {
   const purchaseData = req.body as PurchaseData;
   purchaseData.modalityId = req.purchaseData.modalityId;

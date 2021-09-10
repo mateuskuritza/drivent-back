@@ -9,5 +9,5 @@ const router = Router();
 
 router.get("/:id", controller.getPurchaseInfo);
 router.post("/", schemaValidatingMiddleware(purchaseSchema), controller.savePurchaseInfo);
-
+router.post("/pay", controller.processPurchase);
 export default router;
