@@ -13,7 +13,7 @@ export async function get(req: Request, res: Response) {
 }
 
 export async function getRooms(req: Request, res: Response) {
-  const hotelId = Number(req.params.id);
+  const hotelId = Number(req.params.hotelId);
   if(!hotelId || isNaN(hotelId)) throw new InvalidDataError("hotelID invalid", []);
   const hotel = await hotelService.getHotelById(hotelId);
   if(!hotel) throw new NotFoundError();
@@ -22,7 +22,7 @@ export async function getRooms(req: Request, res: Response) {
 }
 
 export async function reserveRoom(req: Request, res: Response) {
-  const roomId = Number(req.params.id);
+  const roomId = Number(req.params.roomId);
   const userId = Number(req.user.id);
   if(!roomId || isNaN(roomId)) throw new InvalidDataError("roomID invalid", []);
   const userRoom = await roomService.getRoomByUserId(userId);
