@@ -5,6 +5,7 @@ import Accommodation from "@/entities/Accommodation";
 import Enrollment from "@/entities/Enrollment";
 
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from "typeorm";
+import User from "./User";
 
 @Entity("purchases")
 export default class Purchase extends BaseEntity {
@@ -13,6 +14,9 @@ export default class Purchase extends BaseEntity {
 
   @Column()
   enrollmentId: number;
+
+  @Column()
+  userId: number;
 
   @Column()
   modalityId: number;
@@ -41,14 +45,20 @@ export default class Purchase extends BaseEntity {
   @JoinColumn()
   modality: Modality;
 
+  @ManyToOne(() => User, (user: User) => user.purchase)
+  @JoinColumn()
+  user: User;
+
   populateFromData(data: PurchaseData) {
     this.accommodationId = data.accommodationId;
+    this.enrollmentId = data.enrollmentId;
     this.modalityId = data.modalityId;
-    this.enrollmentId = data.userId;
+    this.userId = data.userId;
+    this.paymentDone = data.paymentDone || false;
   }
 
   static async getByUserId(userId: number) {
-    const purchase = await this.findOne({ where: { id: userId } });
+    const purchase = await this.findOne({ where: { userId: userId } });
 
     return purchase;
   }

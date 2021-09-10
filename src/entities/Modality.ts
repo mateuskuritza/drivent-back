@@ -43,11 +43,11 @@ export default class Modality extends BaseEntity {
   static async updateModalityInfo(data: ModalityData) {
     const modality = await this.findOne({ where: { id: data.modalityId } });
 
-    if (modality.availableVacancy === 0) {
+    if (modality && modality.availableVacancy === 0) {
       throw new NoVacancyAvailable();
     }
 
-    if (modality.availableVacancy > 0) {
+    if (modality && modality.availableVacancy > 0) {
       modality.availableVacancy -= 1;
     }
 

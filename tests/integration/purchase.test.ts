@@ -8,6 +8,7 @@ import Purchase from "../../src/entities/Purchase";
 import { login } from "../factories/userFactory";
 import { createEnrollment } from "../factories/enrollmentFactory";
 import { createPurchase } from "../factories/purchaseFactory";
+import { number } from "joi";
 
 const agent = supertest(app);
 
@@ -58,9 +59,9 @@ describe("GET /payment", () => {
       token,
     } = await login();
 
-    await createEnrollment(userId);
+    const enrollment = await createEnrollment(userId);
 
-    await createPurchase(userId, 1, 1);
+    await createPurchase(userId, 1, 1, enrollment.id);
 
     const response = await agent.get(`/payment/${userId}`).set("Authorization", `Bearer ${token}`);
 
@@ -68,6 +69,7 @@ describe("GET /payment", () => {
     expect(response.body).toEqual({
       purchase: {
         id: expect.any(Number),
+        userId: expect.any(Number),
         enrollmentId: expect.any(Number),
         modalityId: 1,
         accommodationId: 1,
@@ -125,5 +127,55 @@ describe("POST /payment", () => {
 
     const purchaseFind = await Purchase.find();
     expect(purchaseFind.length).toEqual(1);
+  });
+});
+
+describe("POST /payment/pay", () => {
+  it("should return status OK and switch purchase.paymentDone from false to true.", async () => {
+    const {
+      user: { id: userId },
+      token,
+    } = await login();
+    await createEnrollment(userId);
+    await agent
+      .post("/payment")
+      .send({
+        modalityId: 1,
+        accommodationId: 1,
+        userId: userId,
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    const body = {
+      modalityId: 1,
+      accommodationId: 1,
+      userId: userId,
+      paymentDone: true,
+    };
+    const response = await agent.post("/payment/pay").send(body).set("Authorization", `Bearer ${token}`);
+
+    const result = await agent.get(`/payment/${userId}`).set("Authorization", `Bearer ${token}`);
+
+    expect(response.statusCode).toEqual(httpStatus.OK);
+    expect(result.body.purchase.paymentDone).toEqual(true);
+  });
+
+  it("should return status 422 for invalid params.", async () => {
+    const {
+      user: { id: userId },
+      token,
+    } = await login();
+
+    const body = {
+      modalityId: 1,
+      accommodationId: 1,
+      userId: 0,
+      paymentDone: true,
+    };
+
+    await createEnrollment(userId);
+
+    const response = await agent.post("/payment/pay").send(body).set("Authorization", `Bearer ${token}`);
+    expect(response.statusCode).toEqual(httpStatus.BAD_REQUEST);
   });
 });
