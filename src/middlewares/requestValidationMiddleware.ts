@@ -6,8 +6,10 @@ export default async function requestValidationMiddleware(req: Request, res: Res
   try {
     const modalityId: number = req.body.modalityId;
     const accommodationId: number = req.body.accommodationId;
+    const userId: number = req.body.userId;
 
     req.purchaseData = {
+      userId,
       modalityId,
       accommodationId,
     } as PurchaseData;

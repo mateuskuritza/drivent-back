@@ -9,6 +9,7 @@ export async function savePurchaseInfo(req: Request, res: Response) {
   const purchaseData = req.body as PurchaseData;
   purchaseData.modalityId = req.purchaseData.modalityId;
   purchaseData.accommodationId = req.purchaseData.accommodationId;
+  purchaseData.userId = req.purchaseData.userId;
 
   //prettier-ignore
   if(purchaseData.modalityId !== 1 && purchaseData.modalityId !== 2 ) return res.sendStatus(httpStatus.BAD_REQUEST);
