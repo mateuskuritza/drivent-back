@@ -47,14 +47,14 @@ export default class Purchase extends BaseEntity {
     this.enrollmentId = data.userId;
   }
 
-  static async getByUserId(userId: number) {
-    const purchase = await this.findOne({ where: { id: userId } });
+  static async getByEnrollmentId(enrollmentId: number) {
+    const purchase = await this.findOne({ where: { enrollmentId: enrollmentId } });
 
     return purchase;
   }
 
-  static async createOrUpdate(purchaseData: PurchaseData) {
-    let purchase = await this.getByUserId(purchaseData.userId);
+  static async createOrUpdate(purchaseData: PurchaseData, enrollmentId: number) {
+    let purchase = await this.getByEnrollmentId(enrollmentId);
 
     purchase ||= Purchase.create();
     purchase.populateFromData(purchaseData);
