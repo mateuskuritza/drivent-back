@@ -6,3 +6,4 @@ yarn.lock
 .vscode
 coverage
 tmp/uploads/**
+tests/unit/entities/Photo.test.ts

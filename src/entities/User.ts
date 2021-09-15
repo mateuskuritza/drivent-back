@@ -29,9 +29,12 @@ export default class User extends BaseEntity {
   @OneToOne(() => Enrollment, enrollment => enrollment.user, { eager: true })
   enrollment: Enrollment;
 
-  @OneToOne(() => Photo, { eager: true, cascade: true })
+  @OneToOne(() => Photo, photo => photo.user, { eager: true })
   @JoinColumn()
   photo: Photo;
+
+  @Column({ default: null })
+  photoId: number;
 
   static async createNew(email: string, password: string) {
     await this.validateDuplicateEmail(email);

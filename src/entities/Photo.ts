@@ -23,35 +23,34 @@ export default class Photo extends BaseEntity {
   @Column({ default: null })
   key: string;
 
-  @OneToOne(() => User, { cascade: true })
+  @OneToOne(() => User, user => user.photo, { cascade: true })
   user: User;
 
-  @Column()
+  @Column({ default: null })
   userId: number;
 
-  static async createOrUpdate(file: LocalFile & S3File, id: number) {
-    const { originalname, size, filename, path, key, location } = file;
-
-    let photo = (await this.find({ where: { userId: id } }))[0];
+  static async createOrUpdate(file: LocalFile & S3File, userId: number) {
+    let photo = await this.findOne({ userId });
 
     photo ||= this.create();
+    photo.userId = userId;
 
-    const user = await User.findOne(id);
+    const isLocalStorage = !!file.path;
+    const newPhoto = this.populateFromData(photo, isLocalStorage, file);
 
-    photo.name = originalname;
-    photo.size = size;
-    photo.userId = user.id;
+    return newPhoto.save();
+  }
 
-    const isLocalStorage = !!path;
-
+  static populateFromData(photo: Photo, isLocalStorage: boolean, file: LocalFile & S3File) {
+    photo.name = file.originalname;
+    photo.size = file.size;
     if (isLocalStorage) {
-      photo.key = filename;
-      photo.url = `${process.env.APP_URL}/files/${filename}`;
+      photo.key = file.filename;
+      photo.url = `${process.env.APP_URL}/files/${file.filename}`;
     } else {
-      photo.key = key;
-      photo.url = location;
+      photo.key = file.key;
+      photo.url = file.location;
     }
-
-    return photo.save();
+    return photo;
   }
 }
