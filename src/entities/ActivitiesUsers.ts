@@ -28,13 +28,19 @@ export default class ActivitiesUsers extends BaseEntity {
   }
 
   static async getByUserId(userId: number) {
-    const activity = await this.findOne({ where: { userId: userId } });
+    const activities = await this.find({ userId: userId });
+
+    return activities;
+  }
+
+  static async findSpecific(data: ActivityUser) {
+    const activity = await this.findOne({ where: { userId: data.userId, activityId: data.activityId } });
 
     return activity;
   }
 
   static async createOrUpdate(subscriptionData: ActivityUser) {
-    let activity = await this.getByUserId(subscriptionData.userId);
+    let activity = await this.findSpecific(subscriptionData);
 
     activity ||= ActivitiesUsers.create();
     activity.populateFromData(subscriptionData);
