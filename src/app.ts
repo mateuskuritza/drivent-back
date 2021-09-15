@@ -15,8 +15,6 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/health", async (_req, res) => {
-  await PasswordRecoveryToken.createNew("abcd", "12345");
-  await PasswordRecoveryToken.fetchByValue("abcd");
   res.send("OK!");
 });
 
