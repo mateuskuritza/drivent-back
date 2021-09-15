@@ -62,11 +62,10 @@ export default class Activities extends BaseEntity {
   static async updateVacancy(activityUser: ActivityUser) {
     const activity = await this.findOne({ where: { id: activityUser.activityId } });
 
-    //activity.vacancy -= 1; -> newActivity = await this.save(activity); -> comparar após atualização
     activity.vacancy -= 1;
-    const newActivity = await this.save(activity);
-    console.log(activity, newActivity);
 
     await activity.save();
+
+    return activity;
   }
 }
