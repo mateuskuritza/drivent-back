@@ -1,6 +1,6 @@
 export default class ExpiredPasswordRecoveryToken extends Error {
   constructor() {
-    super("This token is no longer valid, request a new one!");
+    super("O token expirou, solicite um novo!");
 
     this.name = "ExpiredPasswordRecoveryToken";
   }

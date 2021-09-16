@@ -36,7 +36,7 @@ export async function createPasswordRecoveryLink(email: string) {
     { expiresIn: "1h" },
   );
 
-  const recoveryLink = `${process.env.FRONT_END_URL}/change-password?token=${recoveryToken}`;
+  const recoveryLink = `${process.env.FRONT_END_URL}/change-password/${recoveryToken}`;
 
   return recoveryLink;
 }

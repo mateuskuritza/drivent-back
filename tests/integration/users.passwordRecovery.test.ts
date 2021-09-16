@@ -45,7 +45,7 @@ describe("POST /users/password-recovery", () => {
   });
 });
 
-describe("PATCH /users/change-password?token=", () => {
+describe("PATCH /users/change-password?token", () => {
   it("should return status httpStatus_CREATED for valid email and token", async () => {
     const user = await createUser();
     const body = { password: "12345678" };
@@ -68,6 +68,6 @@ describe("PATCH /users/change-password?token=", () => {
 
     const response = await agent.patch("/users/change-password/?token=INVALID_TOKEN").send(data);
     expect(response.statusCode).toEqual(httpStatus.UNAUTHORIZED);
-    expect(response.body.message).toBe("This token is no longer valid, request a new one!");
+    expect(response.body.message).toBe("O token expirou, solicite um novo!");
   });
 });
