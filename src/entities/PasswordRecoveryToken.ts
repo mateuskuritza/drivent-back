@@ -1,6 +1,6 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, In } from "typeorm";
 
-@Entity("PasswordRecoveryTokens")
+@Entity("passwordRecoveryTokens")
 export default class PasswordRecoveryToken extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -11,12 +11,12 @@ export default class PasswordRecoveryToken extends BaseEntity {
   @Column()
   email: string;
 
-  @Column()
+  @Column("bigint")
   usedAt: number;
 
   static async fetchByValue(value: string) {
-    const token = await this.find({ where: { value } });
-    return token;
+    const token = await this.findOne({ where: { value } });
+    return token || "";
   }
 
   static async createNew(value: string, email: string) {

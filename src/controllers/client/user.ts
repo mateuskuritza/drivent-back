@@ -13,9 +13,9 @@ export async function resetPassword(req: Request, res: Response) {
   const user = await service.findByEmail(req.body.email);
   if (!user)
     return res
-      .status(httpStatus.NOT_FOUND)
+      .status(httpStatus.UNAUTHORIZED)
       .json({
-        text: "Email não cadastrado!",
+        message: "Esse email não está cadastrado!",
       })
       .end();
 
@@ -23,7 +23,7 @@ export async function resetPassword(req: Request, res: Response) {
   const mailTo = user.email;
   const data = { recoveryLink, mailTo };
 
-  sendRecoveryEmail(data);
+  await sendRecoveryEmail(data);
 
   res.status(httpStatus.CREATED).end();
 }
