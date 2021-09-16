@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import httpStatus from "http-status";
 
 import * as enrollmentService from "@/services/client/enrollment";
+import * as photoService from "@/services/client/photo";
 import EnrollmentData from "@/interfaces/enrollment";
 
 export async function saveEnrollmentInfo(req: Request, res: Response) {
@@ -12,11 +13,13 @@ export async function saveEnrollmentInfo(req: Request, res: Response) {
 }
 
 export async function getEnrollmentInfos(req: Request, res: Response) {
-  const enrollmentInfo = await enrollmentService.getEnrollmentWithAddress(req.user.id);
+  const userId = req.user.id;
+  const enrollmentInfo = await enrollmentService.getEnrollmentWithAddress(userId);
+  const photo = await photoService.getPhotoByUserId(userId);
 
   if (!enrollmentInfo) {
     return res.sendStatus(httpStatus.NO_CONTENT);
   }
 
-  res.send(enrollmentInfo).status(httpStatus.OK);
+  res.send({ enrollment: enrollmentInfo, photo }).status(httpStatus.OK);
 }

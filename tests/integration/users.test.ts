@@ -8,7 +8,7 @@ import Setting from "../../src/entities/Setting";
 import User from "../../src/entities/User";
 import { clearDatabase, endConnection } from "../utils/database";
 import { createBasicSettings } from "../utils/app";
-import { createUser } from "../factories/userFactory";
+import { createUser, login } from "../factories/userFactory";
 
 const agent = supertest(app);
 
@@ -78,5 +78,23 @@ describe("POST /users", () => {
 
     const usersDatabase = await User.find({ email: userData.email });
     expect(usersDatabase.length).toEqual(0);
+  });
+});
+
+describe("POST /users/photo", () => {
+  it("should return 401 invalid token", async () => {
+    const response = await agent
+      .post("/users/photo")
+      .set("Authorization", "Bearer " + "")
+      .send({});
+    expect(response.statusCode).toBe(401);
+  });
+  it("should return 422 invalid image type", async () => {
+    const { token } = await login();
+    const response = await agent
+      .post("/users/photo")
+      .send({})
+      .set("Authorization", "Bearer " + token);
+    expect(response.statusCode).toBe(422);
   });
 });
