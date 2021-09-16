@@ -21,7 +21,5 @@ export async function getActivitiesInfo(req: Request, res: Response) {
     return res.sendStatus(httpStatus.NO_CONTENT);
   }
 
-  console.log(activitiesInfo);
-
   res.send(activitiesInfo).status(httpStatus.OK);
 }
