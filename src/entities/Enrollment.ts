@@ -1,3 +1,4 @@
+import { EntityManager, getConnection } from "typeorm";
 import CpfNotAvailableError from "@/errors/CpfNotAvailable";
 import EnrollmentData from "@/interfaces/enrollment";
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
@@ -66,10 +67,18 @@ export default class Enrollment extends BaseEntity {
 
     enrollment ||= Enrollment.create();
     enrollment.populateFromData(data);
-    await enrollment.save();
 
-    enrollment.address.enrollmentId = enrollment.id;
-    await enrollment.address.save();
+    await getConnection().transaction(async (manager: EntityManager) => {
+      try {
+        await manager.save(Enrollment, enrollment);
+
+        enrollment.address.enrollmentId = enrollment.id;
+        await manager.save(Address, enrollment.address);
+      } catch (err) {
+        /* eslint-disable-next-line no-console */
+        console.error(err);
+      }
+    });
   }
 
   static async getByUserIdWithAddress(userId: number) {
