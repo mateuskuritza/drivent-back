@@ -22,6 +22,6 @@ router.patch(
   schemaValidatingMiddleware(changePasswordSchema),
   controller.changePassword,
 );
-
 router.post("/photo", tokenValidationMiddleware, multer(multerConfig).single("file"), controller.updatePhoto);
+
 export default router;

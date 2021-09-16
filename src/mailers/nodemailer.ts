@@ -1,18 +1,33 @@
 import nodemailer from "nodemailer";
 import SMTP_CONFIG from "./config/nodemailer-smtp";
 
-const transporter = nodemailer.createTransport({
-  host: SMTP_CONFIG.host,
-  port: Number(SMTP_CONFIG.port),
-  secure: false,
-  auth: {
-    user: SMTP_CONFIG.user,
-    pass: SMTP_CONFIG.pass,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
+let transporterCFG = {};
+
+if (process.env.NODE_ENV !== "test") {
+  transporterCFG = {
+    host: SMTP_CONFIG.host,
+    port: Number(SMTP_CONFIG.port),
+    secure: false,
+    auth: {
+      user: SMTP_CONFIG.user,
+      pass: SMTP_CONFIG.pass,
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  };
+} else {
+  transporterCFG = {
+    host: SMTP_CONFIG.host,
+    port: Number(SMTP_CONFIG.port),
+    secure: false,
+    tls: {
+      rejectUnauthorized: false,
+    },
+  };
+}
+
+const transporter = nodemailer.createTransport(transporterCFG);
 
 interface RecoveryEmailData {
   mailTo: string;

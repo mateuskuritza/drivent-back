@@ -16,13 +16,14 @@ export async function signUp(req: Request, res: Response) {
 
 export async function resetPassword(req: Request, res: Response) {
   const user = await service.findByEmail(req.body.email);
-  if (!user)
+  if (!user) {
     return res
       .status(httpStatus.UNAUTHORIZED)
       .json({
         message: "Esse email não está cadastrado!",
       })
       .end();
+  }
 
   const recoveryLink = await service.createPasswordRecoveryLink(user.email);
   const mailTo = user.email;
