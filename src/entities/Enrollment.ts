@@ -71,11 +71,9 @@ export default class Enrollment extends BaseEntity {
     await getConnection().transaction(async (manager: EntityManager) => {
       try {
         await manager.save(Enrollment, enrollment);
-        //await enrollment.save();
 
         enrollment.address.enrollmentId = enrollment.id;
         await manager.save(Address, enrollment.address);
-        //await enrollment.address.save();
       } catch (err) {
         console.error(err);
       }
