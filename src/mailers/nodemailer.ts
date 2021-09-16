@@ -45,8 +45,8 @@ export async function sendRecoveryEmail(data: RecoveryEmailData) {
       html: `
         <head>
           <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-          <title>Reset Password Email Template</title>
-          <meta name="description" content="Reset Password Email Template.">
+          <title>Email de Recuperação de Senha</title>
+          <meta name="description" content="Email de recuperação de Senha.">
           <style type="text/css">
             a:hover {text-decoration: underline !important;}
           </style>
