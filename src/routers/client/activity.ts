@@ -6,4 +6,5 @@ const router = Router();
 
 router.get("/", controller.getActivitiesInfo);
 router.post("/", controller.saveActivityInfo);
+
 export default router;
