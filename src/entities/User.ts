@@ -1,9 +1,10 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
 import bcrypt from "bcrypt";
 import EmailNotAvailableError from "@/errors/EmailNotAvailable";
 import Room from "./Room";
 import Purchase from "./Purchase";
 import Enrollment from "@/entities/Enrollment";
+import Photo from "./Photo";
 
 @Entity("users")
 export default class User extends BaseEntity {
@@ -27,6 +28,13 @@ export default class User extends BaseEntity {
 
   @OneToOne(() => Enrollment, enrollment => enrollment.user, { eager: true })
   enrollment: Enrollment;
+
+  @OneToOne(() => Photo, photo => photo.user, { eager: true })
+  @JoinColumn()
+  photo: Photo;
+
+  @Column({ default: null })
+  photoId: number;
 
   static async createNew(email: string, password: string) {
     await this.validateDuplicateEmail(email);

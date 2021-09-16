@@ -7,6 +7,10 @@ import createNewUserSchema from "@/schemas/createNewUser";
 import resetPasswordSchema from "@/schemas/resetPassword";
 import changePasswordSchema from "@/schemas/changePassword";
 import { passwordRecoveryTokenValidationMiddleware } from "@/middlewares/passwordRecoveryTokenValidationMiddleware";
+import tokenValidationMiddleware from "@/middlewares/tokenValidationMiddleware";
+
+import multerConfig from "./config/multer";
+import multer from "multer";
 
 const router = Router();
 
@@ -19,4 +23,5 @@ router.patch(
   controller.changePassword,
 );
 
+router.post("/photo", tokenValidationMiddleware, multer(multerConfig).single("file"), controller.updatePhoto);
 export default router;

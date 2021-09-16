@@ -5,3 +5,4 @@ ormconfig.js
 [Dd]ist*
 [Bb]in*
 package-lock.json
+tests/unit/entities

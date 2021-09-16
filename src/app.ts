@@ -8,7 +8,9 @@ import "reflect-metadata";
 import connectDatabase from "@/database";
 import errorHandlingMiddleware from "@/middlewares/errorHandlingMiddleware";
 import router from "@/routers";
-import PasswordRecoveryToken from "./entities/PasswordRecoveryToken";
+
+import path from "path";
+import morgan from "morgan";
 
 const app = express();
 app.use(cors());
@@ -17,6 +19,10 @@ app.use(express.json());
 app.get("/health", async (_req, res) => {
   res.send("OK!");
 });
+
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
+app.use("/files", express.static(path.resolve(__dirname, "..", "tmp", "uploads")));
 
 app.use(router);
 app.use(errorHandlingMiddleware);
