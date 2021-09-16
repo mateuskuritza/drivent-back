@@ -46,6 +46,14 @@ export default class User extends BaseEntity {
     return newUser;
   }
 
+  static async updatePassword(email: string, newPassword: string) {
+    const newHashedPassword = this.hashPassword(newPassword);
+    const user = await this.findOne({ where: { email } });
+
+    user.password = newHashedPassword;
+    await this.save(user);
+  }
+
   static hashPassword(password: string) {
     return bcrypt.hashSync(password, 12);
   }

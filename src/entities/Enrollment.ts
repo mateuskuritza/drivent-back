@@ -1,4 +1,4 @@
-import { EntityManager, getConnection, Transaction, TransactionManager } from "typeorm";
+import { EntityManager, getConnection } from "typeorm";
 import CpfNotAvailableError from "@/errors/CpfNotAvailable";
 import EnrollmentData from "@/interfaces/enrollment";
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
@@ -75,6 +75,7 @@ export default class Enrollment extends BaseEntity {
         enrollment.address.enrollmentId = enrollment.id;
         await manager.save(Address, enrollment.address);
       } catch (err) {
+        /* eslint-disable-next-line no-console */
         console.error(err);
       }
     });
