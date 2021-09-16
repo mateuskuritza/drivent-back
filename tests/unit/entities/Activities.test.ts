@@ -47,16 +47,4 @@ describe("ActivitiesUsers.updateVacancy", () => {
     const result = () => Activities.updateVacancy({} as ActivityUser);
     expect(result).resolves;
   });
-  /*
-  it("should update activity vacancy", async () => {
-    const myActivity = new Activities();
-    const initialVacancies = 10;
-    myActivity.vacancy = initialVacancies;
-
-    jest.spyOn(Activities, "findOne").mockImplementationOnce(async () => {
-      return myActivity;
-    });
-    const result = await Activities.updateVacancy({} as ActivityUser);
-    expect(result.vacancy).toBe(initialVacancies - 1);
-  });*/
 });

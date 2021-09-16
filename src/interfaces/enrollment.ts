@@ -6,7 +6,7 @@ interface EnrollmentData {
   birthday: string;
   address: AddressData;
   phone: string;
-  userId: number;
+  userId?: number;
 }
 
 export default EnrollmentData;

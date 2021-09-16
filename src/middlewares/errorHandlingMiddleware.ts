@@ -8,6 +8,7 @@ import ConflictError from "@/errors/ConflictError";
 import UnauthorizedError from "@/errors/Unauthorized";
 import NotFoundError from "@/errors/NotFoundError";
 import NoVacancyAvailableError from "@/errors/NoVacancyAvailable";
+import ExpiredPasswordRecoveryToken from "@/errors/ExpiredPasswordRecoveryToken";
 
 /* eslint-disable-next-line */
 export default function errorHandlingMiddleware(err: Error, _req: Request, res: Response, _next: NextFunction) {
@@ -51,6 +52,12 @@ export default function errorHandlingMiddleware(err: Error, _req: Request, res: 
   if (err instanceof NoVacancyAvailableError) {
     return res.status(httpStatus.METHOD_NOT_ALLOWED).send({
       message: "No Vacancy Available.",
+    });
+  }
+
+  if (err instanceof ExpiredPasswordRecoveryToken) {
+    return res.status(httpStatus.UNAUTHORIZED).send({
+      message: err.message,
     });
   }
 
