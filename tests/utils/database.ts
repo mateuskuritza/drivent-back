@@ -24,7 +24,9 @@ export async function clearDatabase() {
       entities.push(entity);
     }
   }
+  /* eslint-disable-next-line quotes */
   await connection.query('TRUNCATE TABLE "accommodations" RESTART IDENTITY CASCADE');
+  /* eslint-disable-next-line quotes */
   await connection.query('TRUNCATE TABLE "modalities" RESTART IDENTITY CASCADE');
 }
 
