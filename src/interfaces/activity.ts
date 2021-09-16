@@ -9,5 +9,5 @@ export interface ActivityData {
 
 export interface ActivityUser {
   userId: number;
-  activityId: number;
+  activityId?: number;
 }
