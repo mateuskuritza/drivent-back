@@ -21,91 +21,91 @@ seeds:
       value: "https://driveneducation.com.br/wp-content/uploads/2021/07/logo-footer.svg"
   - Hotel:
       id: 1
-      name: 'Palace One'
-      image: 'https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?s=1024x768'
+      name: "Palace One"
+      image: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?s=1024x768"
       size: 1
       vacancies: 0
   - Hotel:
       id: 2
-      name: 'Drivens Resort'
-      image: 'https://media-cdn.tripadvisor.com/media/photo-m/1280/1c/df/22/79/exterior.jpg'
+      name: "Drivens Resort"
+      image: "https://media-cdn.tripadvisor.com/media/photo-m/1280/1c/df/22/79/exterior.jpg"
       size: 2
       vacancies: 0
   - Hotel:
       id: 3
-      name: 'Kariri Resort'
-      image: 'https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg'
+      name: "Kariri Resort"
+      image: "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg"
       size: 3
       vacancies: 0
   - Room:
       id: 1
-      name: '101'
+      name: "101"
       size: 1
       available: 0
       hotelId: 1
   - Room:
       id: 2
-      name: '102'
+      name: "102"
       size: 1
       available: 1
       hotelId: 1
   - Room:
       id: 3
-      name: '103'
+      name: "103"
       size: 1
       available: 0
       hotelId: 1
   - Room:
       id: 4
-      name: '104'
+      name: "104"
       size: 1
       available: 1
       hotelId: 1
   - Room:
       id: 5
-      name: '201'
+      name: "201"
       size: 1
       available: 1
       hotelId: 2
   - Room:
       id: 6
-      name: '202'
+      name: "202"
       size: 2
       available: 2
       hotelId: 2
   - Room:
       id: 7
-      name: '203'
+      name: "203"
       size: 1
       available: 0
       hotelId: 2
   - Room:
       id: 8
-      name: '204'
+      name: "204"
       size: 2
       available: 1
       hotelId: 2
   - Room:
       id: 9
-      name: '301'
+      name: "301"
       size: 1
       available: 0
       hotelId: 3
   - Room:
       id: 10
-      name: '302'
+      name: "302"
       size: 2
       available: 1
       hotelId: 3
   - Room:
       id: 11
-      name: '303'
+      name: "303"
       size: 3
       available: 1
       hotelId: 3
   - Room:
       id: 12
-      name: '304'
+      name: "304"
       size: 3
       available: 2
       hotelId: 3
@@ -129,3 +129,165 @@ seeds:
       id: 2
       name: "withHotel"
       price: 35000
+  - EventDays:
+      id: 1
+      date: "2021-09-25 00:00:00"
+  - EventDays:
+      id: 2
+      date: "2021-09-26 00:00:00"
+  - EventDays:
+      id: 3
+      date: "2021-09-27 00:00:00"
+  - Locations:
+      id: 1
+      name: "Auditório A"
+  - Locations:
+      id: 2
+      name: "Auditório B"
+  - Locations:
+      id: 3
+      name: "Auditório C"
+  - Activities:
+      id: 1
+      name: "Oficina: A"
+      eventDayId: 1
+      startTime: "2021-09-25 09:00:00"
+      endTime: "2021-09-25 10:00:00"
+      vacancy: 25
+      locationId: 1
+  - Activities:
+      id: 2
+      name: "Oficina: B"
+      eventDayId: 1
+      startTime: "2021-09-25 10:00:00"
+      endTime: "2021-09-25 12:00:00"
+      vacancy: 25
+      locationId: 1
+  - Activities:
+      id: 3
+      name: "Oficina: A"
+      eventDayId: 1
+      startTime: "2021-09-25 09:00:00"
+      endTime: "2021-09-25 10:00:00"
+      vacancy: 25
+      locationId: 2
+  - Activities:
+      id: 4
+      name: "Oficina: B"
+      eventDayId: 1
+      startTime: "2021-09-25 10:00:00"
+      endTime: "2021-09-25 11:00:00"
+      vacancy: 25
+      locationId: 2
+  - Activities:
+      id: 5
+      name: "Oficina: A"
+      eventDayId: 1
+      startTime: "2021-09-25 09:00:00"
+      endTime: "2021-09-25 10:00:00"
+      vacancy: 25
+      locationId: 3
+  - Activities:
+      id: 6
+      name: "Oficina: B"
+      eventDayId: 1
+      startTime: "2021-09-25 10:00:00"
+      endTime: "2021-09-25 12:00:00"
+      vacancy: 25
+      locationId: 3
+  - Activities:
+      id: 7
+      name: "Oficina: A"
+      eventDayId: 2
+      startTime: "2021-09-26 09:00:00"
+      endTime: "2021-09-26 10:00:00"
+      vacancy: 25
+      locationId: 1
+  - Activities:
+      id: 8
+      name: "Oficina: B"
+      eventDayId: 2
+      startTime: "2021-09-26 10:00:00"
+      endTime: "2021-09-26 12:00:00"
+      vacancy: 25
+      locationId: 1
+  - Activities:
+      id: 9
+      name: "Oficina: A"
+      eventDayId: 2
+      startTime: "2021-09-26 09:00:00"
+      endTime: "2021-09-26 10:00:00"
+      vacancy: 25
+      locationId: 2
+  - Activities:
+      id: 10
+      name: "Oficina: B"
+      eventDayId: 2
+      startTime: "2021-09-26 10:00:00"
+      endTime: "2021-09-26 11:00:00"
+      vacancy: 25
+      locationId: 2
+  - Activities:
+      id: 11
+      name: "Oficina: A"
+      eventDayId: 2
+      startTime: "2021-09-26 09:00:00"
+      endTime: "2021-09-26 10:00:00"
+      vacancy: 25
+      locationId: 3
+  - Activities:
+      id: 12
+      name: "Oficina: B"
+      eventDayId: 2
+      startTime: "2021-09-26 10:00:00"
+      endTime: "2021-09-26 12:00:00"
+      vacancy: 25
+      locationId: 3
+  - Activities:
+      id: 13
+      name: "Oficina: A"
+      eventDayId: 3
+      startTime: "2021-09-27 09:00:00"
+      endTime: "2021-09-27 10:00:00"
+      vacancy: 25
+      locationId: 1
+  - Activities:
+      id: 14
+      name: "Oficina: B"
+      eventDayId: 3
+      startTime: "2021-09-27 10:00:00"
+      endTime: "2021-09-27 12:00:00"
+      vacancy: 27
+      locationId: 1
+  - Activities:
+      id: 15
+      name: "Oficina: A"
+      eventDayId: 3
+      startTime: "2021-09-27 09:00:00"
+      endTime: "2021-09-27 10:00:00"
+      vacancy: 27
+      locationId: 2
+  - Activities:
+      id: 16
+      name: "Oficina: B"
+      eventDayId: 3
+      startTime: "2021-09-27 10:00:00"
+      endTime: "2021-09-27 11:00:00"
+      vacancy: 27
+      locationId: 2
+  - Activities:
+      id: 17
+      name: "Oficina: A"
+      eventDayId: 3
+      startTime: "2021-09-27 09:00:00"
+      endTime: "2021-09-27 10:00:00"
+      vacancy: 27
+      locationId: 3
+  - Activities:
+      id: 18
+      name: "Oficina: B"
+      eventDayId: 3
+      startTime: "2021-09-27 10:00:00"
+      endTime: "2021-09-27 12:00:00"
+      vacancy: 27
+      locationId: 3

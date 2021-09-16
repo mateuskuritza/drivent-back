@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class ActivitiesPageTables1631655969347 implements MigrationInterface {
-  name = "ActivitiesPageTables1631655969347";
+export class ActivitiesPageTables1631820805817 implements MigrationInterface {
+  name = "ActivitiesPageTables1631820805817";
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "eventDays" ("id" SERIAL NOT NULL, "date" TIMESTAMP NOT NULL, CONSTRAINT "PK_410702c0d792566db2e3e451fd4" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "event_days" ("id" SERIAL NOT NULL, "date" TIMESTAMP NOT NULL, CONSTRAINT "PK_9503f237e42c686fd32876089bc" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "locations" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_7cc1c9e3853b94816c094825e74" PRIMARY KEY ("id"))`,
@@ -23,7 +23,7 @@ export class ActivitiesPageTables1631655969347 implements MigrationInterface {
       `ALTER TABLE "activitiesUsers" ADD CONSTRAINT "FK_73bbb98e63729202fb95d386399" FOREIGN KEY ("activityId") REFERENCES "activities"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "activities" ADD CONSTRAINT "FK_4cfa6561a3127b224e5c3ff2c1e" FOREIGN KEY ("eventDayId") REFERENCES "eventDays"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "activities" ADD CONSTRAINT "FK_4cfa6561a3127b224e5c3ff2c1e" FOREIGN KEY ("eventDayId") REFERENCES "event_days"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "activities" ADD CONSTRAINT "FK_74b92be5924b9fb1d808b4ffcd4" FOREIGN KEY ("locationId") REFERENCES "locations"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -38,6 +38,6 @@ export class ActivitiesPageTables1631655969347 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "activities"`);
     await queryRunner.query(`DROP TABLE "activitiesUsers"`);
     await queryRunner.query(`DROP TABLE "locations"`);
-    await queryRunner.query(`DROP TABLE "eventDays"`);
+    await queryRunner.query(`DROP TABLE "event_days"`);
   }
 }

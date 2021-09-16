@@ -15,15 +15,13 @@ export async function saveActivityInfo(req: Request, res: Response) {
 }
 
 export async function getActivitiesInfo(req: Request, res: Response) {
-  const body = {
-    userId: req.body.userId,
-    activityId: req.body.activityId,
-  };
-  const activitiesInfo = await activityService.getActivities(body);
+  const activitiesInfo = await activityService.getActivities({ userId: req.user.id });
 
   if (activitiesInfo.activities.length === 0 && activitiesInfo.subscription.length === 0) {
     return res.sendStatus(httpStatus.NO_CONTENT);
   }
+
+  console.log(activitiesInfo);
 
   res.send(activitiesInfo).status(httpStatus.OK);
 }

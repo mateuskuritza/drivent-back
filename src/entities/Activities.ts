@@ -28,11 +28,11 @@ export default class Activities extends BaseEntity {
   @Column()
   locationId: number;
 
-  @ManyToOne(() => EventDays, eventDayId => eventDayId.id, { eager: true })
+  @ManyToOne(() => EventDays, eventDay => eventDay.activity, { eager: true })
   @JoinColumn()
   eventDay: EventDays;
 
-  @ManyToOne(() => Locations, locationsId => locationsId.id, { eager: true })
+  @ManyToOne(() => Locations, locations => locations.activity, { eager: true })
   @JoinColumn()
   location: Locations;
 
