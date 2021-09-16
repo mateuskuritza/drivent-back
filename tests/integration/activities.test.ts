@@ -46,3 +46,40 @@ describe("GET /activities", () => {
     expect(response.body.activities[0].id).toEqual(activity.id);
   });
 });
+
+describe("POST /activities", () => {
+  it("should return status 401 invalid token", async () => {
+    const response = await test.get("/activities").set("Authorization", "Bearer " + "123456");
+    expect(response.statusCode).toBe(401);
+  });
+  it("should return status 400 invalid userId", async () => {
+    const { token } = await login();
+    const body = { userId: "a", activityId: 1 };
+    const response = await test
+      .post("/activities")
+      .send(body)
+      .set("Authorization", "Bearer " + token);
+    expect(response.statusCode).toBe(400);
+  });
+  it("should return status 400 invalid activityId", async () => {
+    const { token } = await login();
+    const body = { userId: 1, activityId: "a" };
+    const response = await test
+      .post("/activities")
+      .send(body)
+      .set("Authorization", "Bearer " + token);
+    expect(response.statusCode).toBe(400);
+  });
+  it("should return status 200 with activities", async () => {
+    const { token, user } = await login();
+    const eventDate = await activityFactory.createEventDay();
+    const location = await activityFactory.createLocation();
+    const activity = await activityFactory.create(eventDate.id, location.id);
+    const body = { userId: user.id, activityId: activity.id };
+    const response = await test
+      .post("/activities")
+      .send(body)
+      .set("Authorization", "Bearer " + token);
+    expect(response.statusCode).toBe(200);
+  });
+});

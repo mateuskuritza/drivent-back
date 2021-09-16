@@ -6,13 +6,9 @@ import { ActivityUser } from "@/interfaces/activity";
 
 export async function saveActivityInfo(req: Request, res: Response) {
   const activityData = req.body as ActivityUser;
-  activityData.userId = req.body.userId;
-  activityData.activityId = req.body.activityId;
 
-  //prettier-ignore
-  if(typeof(activityData.userId) !== "number") return res.sendStatus(httpStatus.BAD_REQUEST);
-  //prettier-ignore
-  if(typeof(activityData.activityId) !== "number") return res.sendStatus(httpStatus.BAD_REQUEST);
+  if (typeof activityData.userId !== "number") return res.sendStatus(httpStatus.BAD_REQUEST);
+  if (typeof activityData.activityId !== "number") return res.sendStatus(httpStatus.BAD_REQUEST);
 
   await activityService.createNewSubscription(activityData);
   res.sendStatus(httpStatus.OK);
